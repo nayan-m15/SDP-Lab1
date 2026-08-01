@@ -1,6 +1,39 @@
 import Image from "next/image";
+import { useEffect, useState } from "react"; 
+
 
 export default function Home() {
+
+  const [todos, setTodos] = useState([]); 
+  const [title, setTitle] = useState(""); 
+  
+  async function loadTodos() {
+
+    const res = await fetch("/src/api/todos"); 
+    const data = await res.json(); 
+    setTodos(data); 
+    
+  }
+
+  async function addTodo() {
+    await fetch("src/api/todos", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      }, 
+      body: JSON.stringify({
+        title,
+      }), 
+    }); 
+
+    setTitle(""); 
+    loadTodos(); 
+  }
+
+  useEffect(() => {
+    loadTodos(); 
+  }, []); 
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -63,3 +96,16 @@ export default function Home() {
     </div>
   );
 }
+
+/* 
+return (
+        <main className="p-10">
+            {todos.map((todo: any) => (
+                <div key={todo.id}>
+                    {todo.title}
+                </div>
+            ))}
+        </main>
+    );
+
+*/
