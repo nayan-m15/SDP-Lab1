@@ -2,9 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react"; 
 import { Search, Home as HomeIcon, FolderKanban, Settings } from "lucide-react";
-
-
-
+import "./globals.css";
 
 export default function Home() {
 
@@ -67,121 +65,132 @@ export default function Home() {
   const statusColor = (status: string) => {
     switch (status) {
       case "Completed":
-        return "bg-emerald-500/15 text-emerald-500";
+        return "status-completed";
       case "In Progress":
-        return "bg-amber-500/15 text-amber-500";
+        return "status-progress";
       default:
-        return "bg-blue-500/15 text-blue-500";
+        return "status-todo";
     }
-  };
+};
 
   return (
-    <div className="flex h-screen bg-zinc-100 dark:bg-zinc-950">
+  <div className="app-layout">
 
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">
-            TaskFlow
-          </h1>
-        </div>
+    {/* Sidebar */}
+    <aside className="sidebar">
 
-        <nav className="space-y-2 px-4">
-          <button className="flex w-full items-center gap-3 rounded-xl bg-zinc-100 px-4 py-3 text-left transition hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700">
-            <HomeIcon size={18} />
-            Dashboard
-          </button>
+      <div className="sidebar-header">
+        <h1>TaskFlow</h1>
+      </div>
 
-          <button className="flex w-full items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-zinc-100 dark:hover:bg-zinc-800">
-            <FolderKanban size={18} />
-            Projects
-          </button>
+      <nav className="sidebar-nav">
 
-          <button className="flex w-full items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-zinc-100 dark:hover:bg-zinc-800">
-            <Settings size={18} />
-            Settings
-          </button>
-        </nav>
-      </aside>
+        <button className="nav-item active">
+          <HomeIcon size={18} />
+          <span>Dashboard</span>
+        </button>
 
-      {/* Main */}
-      <main className="flex flex-1 flex-col overflow-hidden">
+        <button className="nav-item">
+          <FolderKanban size={18} />
+          <span>Projects</span>
+        </button>
 
-        {/* Header */}
-        <header className="border-b border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <button className="nav-item">
+          <Settings size={18} />
+          <span>Settings</span>
+        </button>
 
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      </nav>
 
-            {/* Search */}
-            <div className="relative w-full max-w-md">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-                size={18}
-              />
+    </aside>
 
-              <input
-                type="text"
-                placeholder="Search tasks..."
-                className="w-full rounded-xl border border-zinc-200 bg-zinc-100 py-3 pl-10 pr-4 outline-none transition focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+    {/* Main */}
+    <main className="main-content">
 
-            {/* Filters */}
-            <div className="flex flex-wrap gap-3">
+      {/* Header */}
 
-              {/* Topic */}
-              <select className="rounded-xl border border-zinc-200 bg-zinc-100 px-4 py-3 text-sm outline-none transition focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800" value={topicFilter}
-                onChange={(e) => setTopicFilter(e.target.value)}>
-                <option>All Topics</option>
-                <option>University</option>
-                <option>Portfolio</option>
-                <option>Database</option>
-                <option>Personal</option>
-              </select>
+      <header className="topbar">
 
-              {/* Status */}
-              <select className="rounded-xl border border-zinc-200 bg-zinc-100 px-4 py-3 text-sm outline-none transition focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800"  value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}>
-                <option>All Statuses</option>
-                <option>To Do</option>
-                <option>In Progress</option>
-                <option>Completed</option>
-              </select>
+        <div className="toolbar">
 
-              {/* Due Date */}
-              <input
-                type="date"
-                className="rounded-xl border border-zinc-200 bg-zinc-100 px-4 py-3 text-sm outline-none transition focus:border-blue-500 dark:border-zinc-700 dark:bg-zinc-800"
-                value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value)}
-              />
+          {/* Search */}
 
-            </div>
+          <div className="search-box">
+
+            <Search size={18} className="search-icon" />
+
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              className="search-input"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
 
           </div>
 
-        </header>
+          {/* Filters */}
 
-        {/* Content */}
-        <section className="flex-1 overflow-y-auto p-8">
+          <div className="filters">
 
-          <h2 className="mb-6 text-3xl font-bold dark:text-white">
-            My Tasks
-          </h2>
+            <select
+              className="filter-select"
+              value={topicFilter}
+              onChange={(e) => setTopicFilter(e.target.value)}
+            >
+              <option>All Topics</option>
+              <option>University</option>
+              <option>Portfolio</option>
+              <option>Database</option>
+              <option>Personal</option>
+            </select>
 
-          <div className="space-y-5">
+            <select
+              className="filter-select"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option>All Statuses</option>
+              <option>To Do</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+            </select>
 
-            {tasks.filter((task) => {
+            <input
+              type="date"
+              className="filter-date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+            />
+
+          </div>
+
+        </div>
+
+      </header>
+
+      {/* Content */}
+
+      <section className="content">
+
+        <h2 className="page-title">
+          My Tasks
+        </h2>
+
+        <div className="task-list">
+
+          {tasks
+            .filter((task) => {
               const matchesSearch =
                 task.title.toLowerCase().includes(search.toLowerCase());
 
               const matchesTopic =
-                topicFilter === "All Topics" || task.topic === topicFilter;
+                topicFilter === "All Topics" ||
+                task.topic === topicFilter;
 
               const matchesStatus =
-                statusFilter === "All Statuses" || task.status === statusFilter;
+                statusFilter === "All Statuses" ||
+                task.status === statusFilter;
 
               const matchesDate =
                 !dateFilter ||
@@ -193,49 +202,54 @@ export default function Home() {
                 matchesStatus &&
                 matchesDate
               );
-            }).map((task, index) => (
-              <div
+            })
+            .map((task, index) => (
+
+              <article
                 key={index}
-                className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
+                className="task-card"
               >
-                <div className="flex items-start justify-between">
+
+                <div className="task-header">
 
                   <div>
-                    <h3 className="text-lg font-semibold dark:text-white">
+
+                    <h3 className="task-title">
                       {task.title}
                     </h3>
 
-                    <p className="mt-2 text-sm text-zinc-500">
-                      Topic:{" "}
-                      <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                        {task.topic}
-                      </span>
+                    <p className="task-meta">
+                      Topic:
+                      <span>{task.topic}</span>
                     </p>
 
-                    <p className="mt-1 text-sm text-zinc-500">
-                      Due Date:{" "}
-                      <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                        {task.due}
-                      </span>
+                    <p className="task-meta">
+                      Due:
+                      <span>{task.due}</span>
                     </p>
+
                   </div>
 
                   <span
-                    className={`rounded-full px-4 py-2 text-sm font-semibold ${statusColor(
-                      task.status
-                    )}`}
+                    className={`status-badge ${statusColor(task.status)}`}
                   >
                     {task.status}
                   </span>
+
                 </div>
-              </div>
+
+              </article>
+
             ))}
 
-          </div>
-        </section>
-      </main>
-    </div>
-  );
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+);
 }
 
 /* 
