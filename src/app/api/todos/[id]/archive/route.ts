@@ -1,4 +1,4 @@
-import { prisma } from "../../../../../lib/prisma";
+import { prisma } from "../../../../../../lib/prisma";
 import { NextResponse } from "next/server";
 
 interface RouteContext {
@@ -12,7 +12,6 @@ export async function PATCH(
     { params }: RouteContext
 ) {
     const { id } = await params;
-    const body = await req.json();
 
     const todo = await prisma.todo.update({
         where: {
@@ -20,14 +19,7 @@ export async function PATCH(
         },
 
         data: {
-            title: body.title,
-            description: body.description,
-            dueDate: body.dueDate
-                ? new Date(body.dueDate)
-                : null,
-            topic: body.topic,
-            category: body.category,
-            status: body.status,
+            archived: true,
         },
     });
 

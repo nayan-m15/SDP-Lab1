@@ -15,14 +15,14 @@ export default function Home() {
   
   async function loadTodos() {
 
-    const res = await fetch("/src/api/todos"); 
+    const res = await fetch("/api/todos"); 
     const data = await res.json(); 
     setTodos(data); 
     
   }
 
   async function addTodo() {
-    await fetch("src/api/todos", {
+    await fetch("/api/todos", {
       method: "POST", 
       headers: {
         "Content-Type": "application/json",

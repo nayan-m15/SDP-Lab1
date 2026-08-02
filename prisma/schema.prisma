@@ -17,4 +17,6 @@ model Todo {
   category    String?
   status      String  
   createdAt   DateTime  @default(now())
+  archived    Boolean @default(false)
+  updatedAt   DateTime @updatedAt
 }
