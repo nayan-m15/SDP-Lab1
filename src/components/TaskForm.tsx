@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Todo } from "../types/todo";
+import "./TaskForm.css"; 
 
 interface Props {
     initial?: Partial<Todo>;
@@ -26,7 +27,7 @@ export default function TaskForm({
 
     return (
 
-        <form
+        <form className="task-form"
             onSubmit={(e) => {
                 e.preventDefault();
 

@@ -1,0 +1,123 @@
+
+.task-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+    width:100%;
+    max-width:520px;
+
+    padding:24px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+    border-radius:18px;
+
+    box-shadow:var(--shadow);
+}
+
+/* Shared field styles */
+
+.task-form input,
+.task-form textarea,
+.task-form select{
+
+    width:100%;
+
+    padding:13px 16px;
+
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    background:var(--background);
+    color:var(--foreground);
+
+    transition:.18s;
+}
+
+.task-form input::placeholder,
+.task-form textarea::placeholder{
+    color:var(--subtle);
+}
+
+.task-form input:hover,
+.task-form textarea:hover,
+.task-form select:hover{
+    border-color:var(--border-hover);
+}
+
+.task-form input:focus,
+.task-form textarea:focus,
+.task-form select:focus{
+    outline:none;
+    border-color:var(--accent);
+}
+
+/* Textarea  */
+
+.task-form textarea{
+    min-height:110px;
+    resize:vertical;
+    line-height:1.5;
+}
+
+/* Select */
+
+.task-form select{
+    cursor:pointer;
+}
+
+/* Date input */
+
+.task-form input[type="date"]{
+    color:var(--foreground);
+    cursor:pointer;
+}
+
+/* Submit button */
+
+.task-form button[type="submit"]{
+
+    align-self:flex-start;
+
+    margin-top:6px;
+
+    padding:13px 26px;
+
+    border:none;
+    border-radius:12px;
+
+    background:var(--accent);
+    color:white;
+
+    font-weight:600;
+    font-size:.95rem;
+
+    transition:.18s;
+}
+
+.task-form button[type="submit"]:hover{
+    background:var(--accent-hover);
+}
+
+.task-form button[type="submit"]:active{
+    transform:translateY(1px);
+}
+
+/* Mobile */
+
+@media (max-width:900px){
+
+    .task-form{
+        max-width:100%;
+        padding:20px;
+        border-radius:12px;
+    }
+
+    .task-form button[type="submit"]{
+        align-self:stretch;
+        text-align:center;
+    }
+
+}
