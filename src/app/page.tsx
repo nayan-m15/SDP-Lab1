@@ -3,65 +3,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react"; 
 import { Search, Home as HomeIcon, FolderKanban, Settings } from "lucide-react";
 import "./globals.css";
+import { useTodos } from "@/hooks/useTodos";  
 
 export default function Home() {
 
-  const [todos, setTodos] = useState([]); 
+  const {todos, loading, addTodo, editTodo, archive, loadTodos, } = useTodos();
   const [title, setTitle] = useState(""); 
   const [search, setSearch] = useState("");
   const [topicFilter, setTopicFilter] = useState("All Topics");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [dateFilter, setDateFilter] = useState("");
   
-  async function loadTodos() {
-
-    const res = await fetch("/api/todos"); 
-    const data = await res.json(); 
-    setTodos(data); 
-    
-  }
-
-  async function addTodo() {
-    await fetch("/api/todos", {
-      method: "POST", 
-      headers: {
-        "Content-Type": "application/json",
-      }, 
-      body: JSON.stringify({
-        title,
-      }), 
-    }); 
-
-    setTitle(""); 
-    loadTodos(); 
-  }
-
-  useEffect(() => {
-    loadTodos(); 
-  }, []); 
-
-  //test tasks
-  const tasks = [
-    {
-      title: "Finish Next.js Assignment",
-      topic: "University",
-      status: "To Do",
-      due: "2 Aug 2026",
-    },
-    {
-      title: "Design Portfolio Landing Page",
-      topic: "Portfolio",
-      status: "In Progress",
-      due: "5 Aug 2026",
-    },
-    {
-      title: "Submit Database Project",
-      topic: "Database",
-      status: "Completed",
-      due: "30 Jul 2026",
-    },
-  ];
-
   const statusColor = (status: string) => {
     switch (status) {
       case "Completed":
@@ -178,69 +130,6 @@ export default function Home() {
         </h2>
 
         <div className="task-list">
-
-          {tasks
-            .filter((task) => {
-              const matchesSearch =
-                task.title.toLowerCase().includes(search.toLowerCase());
-
-              const matchesTopic =
-                topicFilter === "All Topics" ||
-                task.topic === topicFilter;
-
-              const matchesStatus =
-                statusFilter === "All Statuses" ||
-                task.status === statusFilter;
-
-              const matchesDate =
-                !dateFilter ||
-                new Date(task.due).toISOString().split("T")[0] === dateFilter;
-
-              return (
-                matchesSearch &&
-                matchesTopic &&
-                matchesStatus &&
-                matchesDate
-              );
-            })
-            .map((task, index) => (
-
-              <article
-                key={index}
-                className="task-card"
-              >
-
-                <div className="task-header">
-
-                  <div>
-
-                    <h3 className="task-title">
-                      {task.title}
-                    </h3>
-
-                    <p className="task-meta">
-                      Topic:
-                      <span>{task.topic}</span>
-                    </p>
-
-                    <p className="task-meta">
-                      Due:
-                      <span>{task.due}</span>
-                    </p>
-
-                  </div>
-
-                  <span
-                    className={`status-badge ${statusColor(task.status)}`}
-                  >
-                    {task.status}
-                  </span>
-
-                </div>
-
-              </article>
-
-            ))}
 
         </div>
 
