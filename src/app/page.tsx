@@ -1,155 +1,225 @@
-"use client"; 
-import Image from "next/image";
-import { useEffect, useState } from "react"; 
-import { Search, Home as HomeIcon, FolderKanban, Settings } from "lucide-react";
+"use client";
+import { useMemo, useState } from "react";
+import { Search,  Home as HomeIcon, FolderKanban, Settings, } from "lucide-react";
+
 import "./globals.css";
-import { useTodos } from "@/hooks/useTodos";  
+
+import { useTodos } from "@/hooks/useTodos";
+import TaskCard from "@/components/TaskCard";
+import TaskForm from "@/components/TaskForm";
+import EditTaskModal from "@/components/EditTaskModal";
+import { Todo } from "@/types/todo";
 
 export default function Home() {
+  const { todos, loading, addTodo, editTodo, archive } = useTodos();
 
-  const {todos, loading, addTodo, editTodo, archive, loadTodos, } = useTodos();
-  const [title, setTitle] = useState(""); 
+  const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
   const [search, setSearch] = useState("");
   const [topicFilter, setTopicFilter] = useState("All Topics");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [dateFilter, setDateFilter] = useState("");
-  
-  const statusColor = (status: string) => {
-    switch (status) {
-      case "Completed":
-        return "status-completed";
-      case "In Progress":
-        return "status-progress";
-      default:
-        return "status-todo";
-    }
-};
+
+
+  const topics = [...new Set(todos.map((todo) => todo.topic))];
+  const filteredTodos = useMemo(() => {
+    return todos.filter((task) => {
+      const matchesSearch = task.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      const matchesTopic =
+        topicFilter === "All Topics" || task.topic === topicFilter;
+
+      const matchesStatus =
+        statusFilter === "All Statuses" || task.status === statusFilter;
+
+      const matchesDate =
+        !dateFilter ||
+        (task.dueDate && task.dueDate.slice(0, 10) === dateFilter);
+
+      return (
+        matchesSearch &&
+        matchesTopic &&
+        matchesStatus &&
+        matchesDate
+      );
+    });
+  }, [todos, search, topicFilter, statusFilter, dateFilter]);
 
   return (
-  <div className="app-layout">
+    <div className="app-layout">
 
-    {/* Sidebar */}
-    <aside className="sidebar">
+      {/* Sidebar */}
+      <aside className="sidebar">
 
-      <div className="sidebar-header">
-        <h1>TaskFlow</h1>
-      </div>
+        <div className="sidebar-header">
+          <h1>TaskFlow</h1>
+        </div>
 
-      <nav className="sidebar-nav">
+        <nav className="sidebar-nav">
 
-        <button className="nav-item active">
-          <HomeIcon size={18} />
-          <span>Dashboard</span>
-        </button>
+          <button className="nav-item active">
+            <HomeIcon size={18} />
+            <span>Dashboard</span>
+          </button>
 
-        <button className="nav-item">
-          <FolderKanban size={18} />
-          <span>Projects</span>
-        </button>
+          <button className="nav-item">
+            <FolderKanban size={18} />
+            <span>Projects</span>
+          </button>
 
-        <button className="nav-item">
-          <Settings size={18} />
-          <span>Settings</span>
-        </button>
+          <button className="nav-item">
+            <Settings size={18} />
+            <span>Settings</span>
+          </button>
 
-      </nav>
+        </nav>
 
-    </aside>
+      </aside>
 
-    {/* Main */}
-    <main className="main-content">
+      {/* Main */}
+      <main className="main-content">
 
-      {/* Header */}
+        {/* Header */}
+        <header className="topbar">
 
-      <header className="topbar">
+          <div className="toolbar">
 
-        <div className="toolbar">
+            <div className="search-box">
 
-          {/* Search */}
+              <Search size={18} className="search-icon" />
 
-          <div className="search-box">
+              <input
+                type="text"
+                placeholder="Search tasks..."
+                className="search-input"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
 
-            <Search size={18} className="search-icon" />
+            </div>
 
-            <input
-              type="text"
-              placeholder="Search tasks..."
-              className="search-input"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="filters">
+
+              <select
+                className="filter-select"
+                value={topicFilter}
+                onChange={(e) => setTopicFilter(e.target.value)}
+              >
+
+                <option value="All Topics">
+                  All Topics
+                </option>
+
+                {topics.map((topic) => (
+
+                  <option
+                    key={topic}
+                    value={topic}
+                  >
+                    {topic}
+                  </option>
+
+                ))}
+
+              </select>
+
+              <select
+                className="filter-select"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option>All Statuses</option>
+                <option>To Do</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+              </select>
+
+              <input
+                type="date"
+                className="filter-date"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+              />
+
+            </div>
 
           </div>
 
-          {/* Filters */}
+        </header>
 
-          <div className="filters">
+        {/* Content */}
+        <section className="content">
 
-            <select
-              className="filter-select"
-              value={topicFilter}
-              onChange={(e) => setTopicFilter(e.target.value)}
-            >
-              <option>All Topics</option>
-              <option>University</option>
-              <option>Portfolio</option>
-              <option>Database</option>
-              <option>Personal</option>
-            </select>
+          <h2 className="page-title">
+            My Tasks
+          </h2>
 
-            <select
-              className="filter-select"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option>All Statuses</option>
-              <option>To Do</option>
-              <option>In Progress</option>
-              <option>Completed</option>
-            </select>
+          <TaskForm
+            onSubmit={async (data) => {
+              await addTodo(data);
+            }}
+          />
 
-            <input
-              type="date"
-              className="filter-date"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-            />
+          {loading ? (
 
-          </div>
+            <p className="empty-state">
+              Loading tasks...
+            </p>
 
-        </div>
+          ) : filteredTodos.length === 0 ? (
 
-      </header>
+            <p className="empty-state">
+              No tasks found.
+            </p>
 
-      {/* Content */}
+          ) : (
 
-      <section className="content">
+            <div className="task-list">
 
-        <h2 className="page-title">
-          My Tasks
-        </h2>
+              {filteredTodos.map((todo) => (
 
-        <div className="task-list">
+                <TaskCard
+                  key={todo.id}
+                  todo={todo}
+                  onEdit={(task) => {
+                    setEditingTodo(task);
+                    setShowEditModal(true);
+                  }}
+                  onArchive={archive}
+                />
 
-        </div>
+              ))}
 
-      </section>
+            </div>
 
-    </main>
+          )}
 
-  </div>
-);
+        </section>
+
+        <EditTaskModal
+          open={showEditModal}
+          todo={editingTodo}
+          onClose={() => {
+            setShowEditModal(false);
+            setEditingTodo(null);
+          }}
+          onSave={async (data) => {
+
+            if (!editingTodo) return;
+
+            await editTodo(editingTodo.id, data);
+
+            setShowEditModal(false);
+            setEditingTodo(null);
+
+          }}
+        />
+
+      </main>
+
+    </div>
+  );
 }
-
-/* 
-return (
-        <main className="p-10">
-            {todos.map((todo: any) => (
-                <div key={todo.id}>
-                    {todo.title}
-                </div>
-            ))}
-        </main>
-    );
-
-*/
