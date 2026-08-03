@@ -470,3 +470,33 @@ select:focus{
     background: color-mix(in srgb, var(--success) 15%, transparent);
     color: var(--success);
 }
+
+.archive-toggle {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1rem 0 1.5rem;
+}
+
+.archive-btn {
+    border: none;
+    background: var(--surface);
+    color: var(--foreground);
+    padding: 0.7rem 1.4rem;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.archive-btn:not(:last-child) {
+    border-right: 1px solid var(--border);
+}
+
+.archive-btn:hover {
+    background: var(--surface-alt);
+}
+
+.archive-btn.active {
+    background: #55b8a6;
+    color: white;
+}

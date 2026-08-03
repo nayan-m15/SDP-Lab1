@@ -69,7 +69,7 @@ export function useTodos() {
 
     useEffect(() => {
 
-        loadTodos(false);
+        loadTodos();
 
     }, []);
 

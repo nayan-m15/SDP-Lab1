@@ -15,12 +15,12 @@ export default function Home() {
 
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [archiveFilter, setArchiveFilter] = useState<"active" | "archived" | "all">("active");
 
   const [search, setSearch] = useState("");
   const [topicFilter, setTopicFilter] = useState("All Topics");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
   const [dateFilter, setDateFilter] = useState("");
-
 
   const topics = [...new Set(todos.map((todo) => todo.topic))];
   const filteredTodos = useMemo(() => {
@@ -39,11 +39,16 @@ export default function Home() {
         !dateFilter ||
         (task.dueDate && task.dueDate.slice(0, 10) === dateFilter);
 
+      const matchesArchive = archiveFilter === "all" ||
+      (archiveFilter === "active" && !task.archived) ||
+      (archiveFilter === "archived" && task.archived);
+
       return (
         matchesSearch &&
         matchesTopic &&
         matchesStatus &&
-        matchesDate
+        matchesDate &&
+        matchesArchive
       );
     });
   }, [todos, search, topicFilter, statusFilter, dateFilter]);
@@ -101,6 +106,31 @@ export default function Home() {
 
             </div>
 
+            <div className="archive-toggle">
+
+              <button
+                  className={`archive-btn ${archiveFilter === "active" ? "active" : ""}`}
+                  onClick={() => setArchiveFilter("active")}
+              >
+                  Active
+              </button>
+
+              <button
+                  className={`archive-btn ${archiveFilter === "archived" ? "active" : ""}`}
+                  onClick={() => setArchiveFilter("archived")}
+              >
+                  Archived
+              </button>
+
+              <button
+                  className={`archive-btn ${archiveFilter === "all" ? "active" : ""}`}
+                  onClick={() => setArchiveFilter("all")}
+              >
+                  All
+              </button>
+
+          </div>
+
             <div className="filters">
 
               <select
@@ -135,7 +165,7 @@ export default function Home() {
                 <option>To Do</option>
                 <option>In Progress</option>
                 <option>Completed</option>
-              </select>
+              </select>              
 
               <input
                 type="date"
