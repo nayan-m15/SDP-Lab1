@@ -1,36 +1,182 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo Application
 
-## Getting Started
+A modern task management application built with **Next.js**, **React**, **Prisma**, and **SQLite**. The application allows users to create, organize, and manage their tasks while ensuring that all data is persisted between application restarts.
 
-First, run the development server:
+The project demonstrates a full-stack web application with a responsive user interface, persistent storage, filtering and sorting capabilities, and automated testing.
+
+---
+
+# Features
+
+The application provides the following functionality:
+
+* Create new tasks.
+* Edit existing tasks.
+* Archive tasks instead of permanently deleting them.
+* View archived tasks at any time.
+* Store the following information for each task:
+
+  * Title
+  * Description
+  * Due Date
+  * Topic
+* Assign one of three fixed task statuses:
+
+  * **Todo**
+  * **In-Progress**
+  * **Complete**
+* Automatically indicate when a task is overdue.
+* View tasks in a sortable and filterable list.
+* Sort and filter tasks by:
+
+  * Topic
+  * Status
+  * Due Date
+* Persist all task information using an SQLite database, ensuring data remains available after restarting the application.
+
+---
+
+# Technology Stack
+
+* Next.js
+* React
+* TypeScript
+* Prisma ORM
+* SQLite
+* Tailwind CSS
+* Vitest
+* ESLint
+
+---
+
+# Prerequisites
+
+Before running the project, ensure the following software is installed:
+
+* **Node.js:** `v24.13.1`
+* **npm:** Included with the Node.js installation
+
+---
+
+# Getting Started
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/nayan-m15/SDP-Lab1
+cd SDP-Lab1
+```
+
+---
+
+## 2. Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 3. Generate the Prisma Client
+
+```bash
+npx prisma generate
+```
+
+---
+
+## 4. Create the Database (if required)
+
+If the SQLite database file is **not** included in the repository, create it by running the Prisma migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+---
+
+## 5. Start the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# Building the Application
 
-To learn more about Next.js, take a look at the following resources:
+Create an optimized production build:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run the production build:
 
-## Deploy on Vercel
+```bash
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Running Tests
+
+Run all unit tests:
+
+```bash
+npm run test
+```
+
+Run tests in watch mode:
+
+```bash
+npm run test:watch
+```
+
+Launch the Vitest graphical interface:
+
+```bash
+npm run test:ui
+```
+
+Generate a code coverage report:
+
+```bash
+npm run coverage
+```
+
+---
+
+# Linting
+
+Run ESLint to check the project for style and programming errors:
+
+```bash
+npm run lint
+```
+
+---
+
+# Data Persistence
+
+Task information is stored using an SQLite database managed through Prisma ORM.
+
+All tasks persist between application restarts, ensuring that previously created or modified tasks remain available.
+
+---
+
+# AI Disclosure
+
+This repository contains code that was developed with the assistance of generative Artificial Intelligence (AI) tools. All AI-generated content has been reviewed, tested, and, where necessary, modified by the project author before inclusion in the repository.
+
+---
+
+# Documentation Notice
+
+This README was generated and reviewed with the assistance of **ChatGPT (GPT-5.5)** on **3 August 2026**. 

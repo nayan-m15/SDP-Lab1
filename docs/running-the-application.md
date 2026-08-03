@@ -18,8 +18,8 @@ Before you begin, ensure the following software is installed:
 ## 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd todo-app
+git clone https://github.com/nayan-m15/SDP-Lab1
+cd SDP-Lab1
 ```
 
 ## 2. Install Dependencies
