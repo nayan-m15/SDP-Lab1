@@ -121,3 +121,40 @@
     }
 
 }
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.new-task-btn {
+    background: #55b8a6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.new-task-btn:hover {
+    opacity: 0.9;
+}
+
+.task-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.cancel-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1.2rem;
+    cursor: pointer;
+}

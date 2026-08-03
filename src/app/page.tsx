@@ -12,6 +12,7 @@ import { Todo } from "@/types/todo";
 
 export default function Home() {
   const { todos, loading, addTodo, editTodo, archive } = useTodos();
+  const [showTaskForm, setShowTaskForm] = useState(false);
 
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -55,42 +56,18 @@ export default function Home() {
 
   return (
     <div className="app-layout">
-
-      {/* Sidebar */}
-      <aside className="sidebar">
-
-        <div className="sidebar-header">
-          <h1>TaskFlow</h1>
-        </div>
-
-        <nav className="sidebar-nav">
-
-          <button className="nav-item active">
-            <HomeIcon size={18} />
-            <span>Dashboard</span>
-          </button>
-
-          <button className="nav-item">
-            <FolderKanban size={18} />
-            <span>Projects</span>
-          </button>
-
-          <button className="nav-item">
-            <Settings size={18} />
-            <span>Settings</span>
-          </button>
-
-        </nav>
-
-      </aside>
-
+    
       {/* Main */}
       <main className="main-content">
 
         {/* Header */}
         <header className="topbar">
-
+        
           <div className="toolbar">
+
+            <div className="sidebar-header">
+              <h1>TaskFlow</h1>
+            </div>
 
             <div className="search-box">
 
@@ -183,16 +160,35 @@ export default function Home() {
         {/* Content */}
         <section className="content">
 
-          <h2 className="page-title">
-            My Tasks
-          </h2>
+          <div className="page-header">
 
-          <TaskForm
-            onSubmit={async (data) => {
-              await addTodo(data);
-            }}
-          />
+              <h2 className="page-title">
+                  My Tasks
+              </h2>
 
+              <button
+                  className="new-task-btn"
+                  onClick={() => setShowTaskForm(true)}
+              >
+                  + New Task
+              </button>
+
+          </div>
+          {showTaskForm && (
+
+              <TaskForm
+                  onSubmit={async (data) => {
+
+                      await addTodo(data);
+
+                      setShowTaskForm(false);
+
+                  }}
+                  onCancel={() => setShowTaskForm(false)}
+              />
+
+          )}
+        
           {loading ? (
 
             <p className="empty-state">

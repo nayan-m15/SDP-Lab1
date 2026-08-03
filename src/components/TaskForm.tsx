@@ -5,11 +5,12 @@ import { Todo } from "@/types/todo";
 import "./TaskForm.css";
 
 interface Props {
-  initial?: Partial<Todo>;
-  onSubmit: (data: Partial<Todo>) => Promise<void> | void;
+    initial?: Partial<Todo>;
+    onSubmit: (data: Partial<Todo>) => Promise<void> | void;
+    onCancel?: () => void;
 }
 
-export default function TaskForm({ initial, onSubmit }: Props) {
+export default function TaskForm({ initial, onSubmit, onCancel }: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [topic, setTopic] = useState("");
@@ -86,9 +87,25 @@ export default function TaskForm({ initial, onSubmit }: Props) {
         <option>Completed</option>
       </select>
 
-      <button type="submit">
-        {initial ? "Save Changes" : "Create Task"}
-      </button>
+      <div className="task-form-actions">
+
+            {onCancel && (
+
+                <button
+                    type="button"
+                    className="cancel-btn"
+                    onClick={onCancel}
+                >
+                    Cancel
+                </button>
+
+            )}
+
+            <button type="submit">
+                {initial ? "Save Changes" : "Create Task"}
+            </button>
+
+        </div>
 
     </form>
   );
