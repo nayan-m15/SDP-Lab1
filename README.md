@@ -74,6 +74,9 @@ cd SDP-Lab1
 ```bash
 npm install
 ```
+```bash
+npm install prisma@6 @prisma/client@6
+```
 
 ---
 
