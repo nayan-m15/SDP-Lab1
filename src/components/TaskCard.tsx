@@ -39,6 +39,11 @@ export default function TaskCard({
                     </h3>
 
                     <p className="task-meta">
+                        Description:
+                        <span>{todo.description}</span>
+                    </p>
+
+                    <p className="task-meta">
                         Topic:
                         <span>{todo.topic}</span>
                     </p>
