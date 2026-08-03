@@ -27,8 +27,13 @@ export default function TaskCard({
         }
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const isOverdue = !!todo.dueDate && new Date(todo.dueDate) < today && todo.status !== "Completed";
+
     return (
-        <article className="task-card">
+        <article className={`task-card ${isOverdue ? "task-card-overdue" : ""}`}>
 
             <div className="task-header">
 
@@ -63,11 +68,19 @@ export default function TaskCard({
 
                 </div>
 
-                <span
-                    className={`status-badge ${statusColor(todo.status)}`}
-                >
-                    {todo.status}
-                </span>
+                <div className="task-badges">
+
+                    <span className={`status-badge ${statusColor(todo.status)}`}>
+                        {todo.status}
+                    </span>
+
+                    {isOverdue && (
+                        <span className="overdue-badge">
+                        Overdue
+                        </span>
+                    )}
+
+                </div>
 
             </div>
 
