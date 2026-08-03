@@ -21,18 +21,12 @@ export async function getTodos(
     return res.json();
 }
 
-export async function createTodo(
-    todo: Partial<Todo>
-): Promise<Todo> {
-
-    const res = await fetch(BASE_URL, {
-
+export async function createTodo(todo: Partial<Todo>) {
+    const res = await fetch("/api/todos", {
         method: "POST",
-
         headers: {
             "Content-Type": "application/json",
         },
-
         body: JSON.stringify(todo),
     });
 
