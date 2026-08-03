@@ -52,7 +52,7 @@ export default function Home() {
         matchesArchive
       );
     });
-  }, [todos, search, topicFilter, statusFilter, dateFilter]);
+  }, [todos, search, archiveFilter ,topicFilter, statusFilter, dateFilter]);
 
   return (
     <div className="app-layout">
