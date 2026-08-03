@@ -1,92 +1,95 @@
 "use client";
 
-import { useState } from "react";
-import { Todo } from "../types/todo";
-import "./TaskForm.css"; 
+import { useEffect, useState } from "react";
+import { Todo } from "@/types/todo";
+import "./TaskForm.css";
 
 interface Props {
-    initial?: Partial<Todo>;
-    onSubmit: (data: Partial<Todo>) => void;
+  initial?: Partial<Todo>;
+  onSubmit: (data: Partial<Todo>) => Promise<void> | void;
 }
 
-export default function TaskForm({
-    initial,
-    onSubmit,
-}: Props) {
+export default function TaskForm({ initial, onSubmit }: Props) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [topic, setTopic] = useState("");
+  const [status, setStatus] = useState("To Do");
+  const [dueDate, setDueDate] = useState("");
 
-    const [title, setTitle] = useState(initial?.title ?? "");
-    const [description, setDescription] = useState(initial?.description ?? "");
-    const [topic, setTopic] = useState(initial?.topic ?? "");
-    const [status, setStatus] = useState(initial?.status ?? "To Do");
+  useEffect(() => {
+    if (!initial) return;
 
-    const [dueDate, setDueDate] = useState(
-        initial?.dueDate
-            ? initial.dueDate.slice(0, 10)
-            : ""
+    setTitle(initial.title ?? "");
+    setDescription(initial.description ?? "");
+    setTopic(initial.topic ?? "");
+    setStatus(initial.status ?? "To Do");
+    setDueDate(
+      initial.dueDate ? initial.dueDate.slice(0, 10) : ""
     );
+  }, [initial]);
 
-    return (
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
 
-        <form className="task-form"
-            onSubmit={(e) => {
-                e.preventDefault();
+    await onSubmit({
+      title,
+      description,
+      topic,
+      status,
+      dueDate: dueDate || null,
+    });
 
-                onSubmit({
-                    title,
-                    description,
-                    topic,
-                    status,
-                    dueDate,
-                });
-            }}
-        >
+    if (!initial) {
+      setTitle("");
+      setDescription("");
+      setTopic("");
+      setStatus("To Do");
+      setDueDate("");
+    }
+  }
 
-            <input
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-            />
+  return (
+    <form className="task-form" onSubmit={handleSubmit}>
 
-            <textarea
-                placeholder="Description"
-                value={description}
-                onChange={(e) =>
-                    setDescription(e.target.value)
-                }
-            />
+      <input
+        placeholder="Task title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
 
-            <input
-                placeholder="Topic"
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-                required
-            />
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
 
-            <input
-                type="date"
-                value={dueDate}
-                onChange={(e) =>
-                    setDueDate(e.target.value)
-                }
-            />
+      <input
+        placeholder="Topic"
+        value={topic}
+        onChange={(e) => setTopic(e.target.value)}
+        required
+      />
 
-            <select
-                value={status}
-                onChange={(e) =>
-                    setStatus(e.target.value)
-                }
-            >
-                <option>To Do</option>
-                <option>In Progress</option>
-                <option>Completed</option>
-            </select>
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
 
-            <button type="submit">
-                Save Task
-            </button>
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+      >
+        <option>To Do</option>
+        <option>In Progress</option>
+        <option>Completed</option>
+      </select>
 
-        </form>
+      <button type="submit">
+        {initial ? "Save Changes" : "Create Task"}
+      </button>
 
-    );
+    </form>
+  );
 }
