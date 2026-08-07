@@ -78,6 +78,9 @@ npm install
 npm install prisma@6 @prisma/client@6
 ```
 
+```bash
+copy .env.example .env
+```
 ---
 
 ## 3. Generate the Prisma Client
@@ -88,7 +91,7 @@ npx prisma generate
 
 ---
 
-## 4. Create the Database (if required)
+## 4. Create the Database 
 
 If the SQLite database file is **not** included in the repository, create it by running the Prisma migrations:
 
